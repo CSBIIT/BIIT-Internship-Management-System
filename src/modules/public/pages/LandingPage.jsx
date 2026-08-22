@@ -1,78 +1,124 @@
+import React from 'react';
 import { ArrowRight, Briefcase, GraduationCap, Building2, BookOpen } from 'lucide-react';
 import Button from '../../../components/common/Button';
-import heroImage from '../../../assets/images/LandingImage.jpeg';
+import heroImage from '../../../assets/images/LI.jpeg';
+import heroImageMobile from '../../../assets/images/LandingImage.jpeg';
 
 const highlights = [
-  { icon: Briefcase, title: 'Internships', description: 'Discover internships and job opportunities that match the goal.' },
-  { icon: GraduationCap, title: 'Students', description: 'Develop your skills, gain practical experience and advance your careers.' },
-  { icon: Building2, title: 'Employers', description: 'Connect with professionals and organizations that help you grow.' },
-  { icon: BookOpen, title: 'Resources', description: 'Access useful guides, tools, resources to support your career journey.' },
+  {
+    icon: Briefcase,
+    title: 'Internships',
+    description: 'Discover internships and job opportunities that match the goal.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Students',
+    description: 'Develop your skills, gain practical experience and advance your careers.',
+  },
+  {
+    icon: Building2,
+    title: 'Employers',
+    description: 'Connect with professionals and organizations that help you grow.',
+  },
+  {
+    icon: BookOpen,
+    title: 'Resources',
+    description: 'Access useful guides, tools, resources to support your career journey.',
+  },
 ];
+
+const HeroText = ({ align = 'left', size = 'default' }) => (
+  <div className={align === 'center' ? 'text-center' : 'text-left'}>
+    <div className={`w-8 h-px bg-brand/70 mb-3 ${align === 'center' ? 'mx-auto' : ''}`} />
+    <p className="text-brand text-xs font-bold uppercase tracking-[0.15em] mb-3">
+      BIIT Career Services
+    </p>
+
+    <h1
+      className={`font-bold leading-[1.05] mb-4 ${
+        size === 'large' ? 'text-4xl xl:text-5xl' : 'text-2xl sm:text-3xl'
+      }`}
+    >
+      <span className="text-black">Your Career.</span>
+      <br />
+      <span className="text-brand">Our Commitment.</span>
+    </h1>
+
+    <p className={`text-gray-500 leading-relaxed ${size === 'large' ? 'text-base mb-8 max-w-sm' : 'text-sm mb-5'}`}>
+      Bridging talent with opportunities.
+      <br />
+      Empowering students to build future and helping organizations to find the right talent.
+    </p>
+
+    <Button icon={ArrowRight} className={size === 'large' ? 'px-8 py-3.5 text-base' : ''}>
+      Get Started
+    </Button>
+  </div>
+);
 
 const LandingPage = () => {
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero section */}
-      <section className="relative overflow-hidden bg-white">
-        <div className="w-full h-[320px] sm:h-[400px] lg:h-[480px] relative">
+    <div className="bg-white">
+      {/* ===== MOBILE + TABLET hero (below lg) - FIXED VERSION ===== */}
+      <section className="lg:hidden">
+        <div 
+          className="relative h-56 sm:h-72 rounded-b-3xl overflow-hidden bg-[#f7f6f2]"
+          style={{
+            backgroundImage: `url(${heroImageMobile})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 20%',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[#f7f6f2]" />
+        </div>
+
+        <div className="px-4 sm:px-6 pt-6 pb-4 bg-[#f7f6f2]">
+          <HeroText align="left" />
+        </div>
+      </section>
+
+      {/* ===== DESKTOP hero (lg and up) - EXACT SAME AS PREVIOUS ===== */}
+      <section className="hidden lg:block relative overflow-hidden bg-[#f7f6f2]">
+        <div className="w-full h-[560px] relative">
+          {/* Decorative soft accent circles for visual depth */}
+          <div className="absolute top-10 left-10 w-24 h-24 rounded-full bg-brand/5 blur-2xl" />
+          <div className="absolute bottom-16 left-32 w-16 h-16 rounded-full bg-brand/10 blur-xl" />
+
           <img
             src={heroImage}
             alt="BIIT Career Services team"
-            className="absolute inset-0 w-full h-full object-cover object-right"
+            className="absolute inset-0 w-full h-full object-contain object-right"
+            style={{
+              maskImage: 'linear-gradient(to right, transparent 0%, black 6%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%)',
+            }}
           />
 
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 via-50% to-transparent" />
+          {/* Tinted fade matching the photo's warm tone, not stark white */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#f7f6f2] from-[25%] via-[#f7f6f2]/80 via-[38%] to-transparent to-[55%]" />
 
-          <div className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-            <div className="max-w-sm sm:max-w-md lg:max-w-lg">
-              <div className="w-10 h-0.5 bg-[#1a4d3e] mb-2" />
-              <p className="text-[#1a4d3e] text-xs font-bold uppercase tracking-wide mb-3">
-                BIIT Career Services
-              </p>
-
-              <h1 className="font-bold leading-tight text-3xl sm:text-4xl lg:text-5xl mb-3">
-                <span className="text-black">Your Career.</span>
-                <br />
-                <span className="text-[#1a4d3e]">Our Commitment.</span>
-              </h1>
-
-              <p className="text-gray-600 text-sm sm:text-base mb-6 max-w-sm">
-                Bridging talent with opportunities.
-                <br />
-                Empowering students to build future and helping organizations to find the right talent.
-              </p>
-
-              <Button 
-                icon={ArrowRight} 
-                className="bg-[#1a4d3e] hover:bg-[#143a2f] text-white px-6 py-2.5 rounded-lg"
-              >
-                Get Started
-              </Button>
+          {/* Text content, pinned in a fixed-width column so it never shifts */}
+          <div className="absolute inset-0 max-w-7xl mx-auto px-10 flex flex-col justify-center">
+            <div className="max-w-lg relative z-10">
+              <HeroText align="left" size="large" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Service highlights card - overlapping hero bottom */}
-      <div className="relative z-20 -mt-16 sm:-mt-20 lg:-mt-24 px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
-        <div className="bg-[#1a4d3e] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-6xl mx-auto shadow-xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6">
+      {/* Floating dark-green service highlights card, overlapping hero bottom */}
+      <div className="relative z-20 mt-6 lg:-mt-20 px-4 sm:px-6 lg:px-10 pb-16">
+        <div className="bg-brand rounded-3xl p-6 sm:p-8 lg:p-10 max-w-6xl mx-auto shadow-xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
             {highlights.map(({ icon: Icon, title, description }) => (
-              <div 
-                key={title} 
-                className="flex items-start gap-4 sm:flex-col sm:items-start"
-              >
-                <div className="bg-white/10 rounded-full p-3 w-fit shrink-0">
+              <div key={title} className="flex flex-col items-center text-center sm:items-start sm:text-left">
+                <div className="bg-white/15 rounded-full p-3 sm:p-4 w-fit mb-3">
                   <Icon className="text-white" size={20} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-semibold text-sm sm:text-base lg:text-lg mb-1">
-                    {title}
-                  </h3>
-                  <p className="text-white/70 text-xs sm:text-sm leading-relaxed">
-                    {description}
-                  </p>
+                <div>
+                  <h3 className="text-white font-bold text-base sm:text-lg mb-1">{title}</h3>
+                  <p className="text-white/80 text-xs sm:text-sm leading-relaxed">{description}</p>
                 </div>
               </div>
             ))}

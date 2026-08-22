@@ -2,7 +2,7 @@ import LogoGreen from '../../assets/logos/LogoGreen.png';
 import LogoWhite from '../../assets/logos/LogoWhite.png';
 
 const Logo = ({ variant = 'green', className = '' }) => {
-  const src = variant === 'white' ? LogoWhite : LogoGreen;
+  const src = variant === 'white' ? LogoGreen : LogoWhite;
 
   return (
     <img
