@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Briefcase, GraduationCap, Building2, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/common/Button';
 import heroImage from '../../../assets/images/LI.jpeg';
 import heroImageMobile from '../../../assets/images/LandingImage.jpeg';
@@ -27,7 +28,7 @@ const highlights = [
   },
 ];
 
-const HeroText = ({ align = 'left', size = 'default' }) => (
+const HeroText = ({ align = 'left', size = 'default', onGetStarted }) => (
   <div className={align === 'center' ? 'text-center' : 'text-left'}>
     <div className={`w-8 h-px bg-brand/70 mb-3 ${align === 'center' ? 'mx-auto' : ''}`} />
     <p className="text-brand text-xs font-bold uppercase tracking-[0.15em] mb-3">
@@ -50,13 +51,20 @@ const HeroText = ({ align = 'left', size = 'default' }) => (
       Empowering students to build future and helping organizations to find the right talent.
     </p>
 
-    <Button icon={ArrowRight} className={size === 'large' ? 'px-8 py-3.5 text-base' : ''}>
+    <Button
+      icon={ArrowRight}
+      onClick={onGetStarted}
+      className={size === 'large' ? 'px-8 py-3.5 text-base' : ''}
+    >
       Get Started
     </Button>
   </div>
 );
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const goToRoleSelection = () => navigate('/get-started');
+
   return (
     <div className="bg-white">
       {/* ===== MOBILE + TABLET hero (below lg) - FIXED VERSION ===== */}
@@ -74,7 +82,7 @@ const LandingPage = () => {
         </div>
 
         <div className="px-4 sm:px-6 pt-6 pb-4 bg-[#f7f6f2]">
-          <HeroText align="left" />
+          <HeroText align="left" onGetStarted={goToRoleSelection} />
         </div>
       </section>
 
@@ -101,7 +109,7 @@ const LandingPage = () => {
           {/* Text content, pinned in a fixed-width column so it never shifts */}
           <div className="absolute inset-0 max-w-7xl mx-auto px-10 flex flex-col justify-center">
             <div className="max-w-lg relative z-10">
-              <HeroText align="left" size="large" />
+              <HeroText align="left" size="large" onGetStarted={goToRoleSelection} />
             </div>
           </div>
         </div>

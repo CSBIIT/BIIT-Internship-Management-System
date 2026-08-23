@@ -1,14 +1,11 @@
-import { BrowserRouter } from 'react-router-dom';
-import PublicLayout from './modules/public/components/PublicLayout';
-import LandingPage from './modules/public/pages/LandingPage';
+import AppRouter from './routes/AppRouter';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <PublicLayout>
-        <LandingPage />
-      </PublicLayout>
-    </BrowserRouter>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 }
 
