@@ -42,9 +42,11 @@ const ProfileHeader = ({ profile, showActions = true }) => {
 
           {showActions && (
             <div className="flex gap-2 shrink-0">
-              <Button icon={Pencil} variant="outline" className="text-xs px-4 py-2 flex-1 sm:flex-none justify-center">
-                Edit Profile
-              </Button>
+              <Link to="/student/my-profile/edit" className="flex-1 sm:flex-none">
+                <Button icon={Pencil} variant="outline" className="text-xs px-4 py-2 w-full justify-center">
+                  Edit Profile
+                </Button>
+              </Link>
               <Link to="/student/my-profile/share" className="flex-1 sm:flex-none">
                 <Button icon={Share2} variant="outline" className="text-xs px-4 py-2 w-full justify-center">
                   Share Profile

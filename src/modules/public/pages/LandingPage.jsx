@@ -30,34 +30,50 @@ const highlights = [
 
 const HeroText = ({ align = 'left', size = 'default', onGetStarted }) => (
   <div className={align === 'center' ? 'text-center' : 'text-left'}>
-    <div className={`w-8 h-px bg-brand/70 mb-3 ${align === 'center' ? 'mx-auto' : ''}`} />
-    <p className="text-brand text-xs font-bold uppercase tracking-[0.15em] mb-3">
+    <div
+      className={`w-8 h-px bg-brand/70 mb-3 animate-fade-in-up ${align === 'center' ? 'mx-auto' : ''}`}
+      style={{ animationDelay: '0ms' }}
+    />
+    <p
+      className="text-brand text-xs font-bold uppercase tracking-[0.15em] mb-3 animate-fade-in-up"
+      style={{ animationDelay: '80ms' }}
+    >
       BIIT Career Services
     </p>
 
     <h1
-      className={`font-bold leading-[1.05] mb-4 ${
+      className={`font-bold leading-[1.05] mb-4 animate-fade-in-up ${
         size === 'large' ? 'text-4xl xl:text-5xl' : 'text-2xl sm:text-3xl'
       }`}
+      style={{ animationDelay: '160ms' }}
     >
       <span className="text-black">Your Career.</span>
       <br />
-      <span className="text-brand">Our Commitment.</span>
+      <span
+        className="bg-gradient-to-r from-brand via-emerald-400 to-brand bg-[length:200%_auto] bg-clip-text text-transparent animate-shimmer"
+      >
+        Our Commitment.
+      </span>
     </h1>
 
-    <p className={`text-gray-500 leading-relaxed ${size === 'large' ? 'text-base mb-8 max-w-sm' : 'text-sm mb-5'}`}>
+    <p
+      className={`text-gray-500 leading-relaxed animate-fade-in-up ${size === 'large' ? 'text-base mb-8 max-w-sm' : 'text-sm mb-5'}`}
+      style={{ animationDelay: '260ms' }}
+    >
       Bridging talent with opportunities.
       <br />
       Empowering students to build future and helping organizations to find the right talent.
     </p>
 
-    <Button
-      icon={ArrowRight}
-      onClick={onGetStarted}
-      className={size === 'large' ? 'px-8 py-3.5 text-base' : ''}
-    >
-      Get Started
-    </Button>
+    <div className="animate-fade-in-up" style={{ animationDelay: '360ms' }}>
+      <Button
+        icon={ArrowRight}
+        onClick={onGetStarted}
+        className={`transition-transform duration-200 hover:scale-105 ${size === 'large' ? 'px-8 py-3.5 text-base' : ''}`}
+      >
+        Get Started
+      </Button>
+    </div>
   </div>
 );
 
@@ -70,7 +86,7 @@ const LandingPage = () => {
       {/* ===== MOBILE + TABLET hero (below lg) - FIXED VERSION ===== */}
       <section className="lg:hidden">
         <div 
-          className="relative h-56 sm:h-72 rounded-b-3xl overflow-hidden bg-[#f7f6f2]"
+          className="relative h-56 sm:h-72 rounded-b-3xl overflow-hidden bg-[#f7f6f2] animate-fade-in"
           style={{
             backgroundImage: `url(${heroImageMobile})`,
             backgroundSize: 'cover',
@@ -96,10 +112,11 @@ const LandingPage = () => {
           <img
             src={heroImage}
             alt="BIIT Career Services team"
-            className="absolute inset-0 w-full h-full object-contain object-right"
+            className="absolute inset-0 w-full h-full object-contain object-right animate-fade-in"
             style={{
               maskImage: 'linear-gradient(to right, transparent 0%, black 6%)',
               WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%)',
+              animationDelay: '150ms',
             }}
           />
 
@@ -115,22 +132,25 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Floating dark-green service highlights card, overlapping hero bottom */}
+      {/* Service highlights — 4 separate cards, overlapping hero bottom */}
       <div className="relative z-20 mt-6 lg:-mt-20 px-4 sm:px-6 lg:px-10 pb-16">
-        <div className="bg-brand rounded-3xl p-6 sm:p-8 lg:p-10 max-w-6xl mx-auto shadow-xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            {highlights.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="flex flex-col items-center text-center sm:items-start sm:text-left">
-                <div className="bg-white/15 rounded-full p-3 sm:p-4 w-fit mb-3">
-                  <Icon className="text-white" size={20} />
-                </div>
-                <div>
-                  <h3 className="text-white font-bold text-base sm:text-lg mb-1">{title}</h3>
-                  <p className="text-white/80 text-xs sm:text-sm leading-relaxed">{description}</p>
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 max-w-6xl mx-auto">
+          {highlights.map(({ icon: Icon, title, description }, index) => (
+            <div
+              key={title}
+              className="group bg-brand rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-default animate-fade-in-up flex flex-col items-center text-center sm:items-start sm:text-left"
+              style={{ animationDelay: `${400 + index * 100}ms` }}
+            >
+              <div
+                className="bg-white rounded-full p-3 sm:p-3.5 w-fit mb-4 shadow-md transition-transform duration-300 group-hover:scale-110 animate-float"
+                style={{ animationDelay: `${index * 200}ms` }}
+              >
+                <Icon className="text-brand" size={20} />
               </div>
-            ))}
-          </div>
+              <h3 className="text-white font-bold text-base sm:text-lg mb-1.5">{title}</h3>
+              <p className="text-white/80 text-xs sm:text-sm leading-relaxed">{description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

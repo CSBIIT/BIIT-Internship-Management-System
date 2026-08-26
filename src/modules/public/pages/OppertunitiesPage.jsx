@@ -1,12 +1,23 @@
-import { Check } from 'lucide-react';
-import teamPhoto from '../../../assets/images/OppertunitiesP1.png';
-import meetingPhoto from '../../../assets/images/OppertunitiesP2.png';
-import groupPhoto from '../../../assets/images/OppertunitiesP3.png';
+import { useEffect, useRef } from 'react';
+import { Check, ArrowUpRight } from 'lucide-react';
+
+import teamPhoto from '../../../assets/images/OppertunitiesP1.jpeg';
+import meetingPhoto from '../../../assets/images/OppertunitiesP2.jpeg';
+import groupPhoto from '../../../assets/images/OppertunitiesP3.jpeg';
 
 const stats = [
-  { value: '750+', label: 'Internships' },
-  { value: '120+', label: 'Partner Companies' },
-  { value: '95%', label: 'Placement Rate' },
+  {
+    value: '750+',
+    label: 'Internships',
+  },
+  {
+    value: '120+',
+    label: 'Partner Companies',
+  },
+  {
+    value: '95%',
+    label: 'Placement Rate',
+  },
 ];
 
 const experiencePoints = [
@@ -24,112 +35,309 @@ const collaborationPoints = [
 ];
 
 const OpportunitiesPage = () => {
+  const sectionRefs = useRef({});
+
+  useEffect(() => {
+    const elements = Object.values(sectionRefs.current);
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -60px 0px',
+      }
+    );
+
+    elements.forEach((element) => {
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const setSectionRef = (name) => (element) => {
+    sectionRefs.current[name] = element;
+  };
+
   return (
-    <div className="bg-white">
-      {/* Top intro + stats + photo */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <p className="text-brand text-xs font-bold uppercase tracking-wide mb-2">
-              New Opportunities
-            </p>
-            <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-              Explore Opportunities.
-              <br />
-              <span className="text-brand">Build Your Future.</span>
+    <main className="bg-white overflow-hidden">
+
+      {/* =====================================================
+          HERO SECTION
+      ====================================================== */}
+      <section className="opportunities-hero relative overflow-hidden">
+
+        {/* Animated background shapes */}
+        <div className="hero-orb hero-orb-one" />
+        <div className="hero-orb hero-orb-two" />
+        <div className="hero-orb hero-orb-three" />
+
+        <div className="hero-grid-pattern" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center">
+
+            {/* Small animated label */}
+            <div className="hero-label-wrap">
+              <span className="hero-label">
+                OPPORTUNITIES AT BIIT
+              </span>
+            </div>
+
+            {/* Main heading */}
+            <h1 className="hero-title">
+              <span className="hero-title-line hero-title-white">
+                Explore Opportunities.
+              </span>
+
+              <span className="hero-title-line hero-title-green">
+                Build Your Future.
+              </span>
             </h1>
-            <p className="text-gray-500 text-sm sm:text-base mb-6">
+
+            {/* Description */}
+            <p className="hero-description">
               BIIT Career Services connects talented students with meaningful
-              internship opportunities that help transform academic knowledge
-              into practical professional experience.
+              internship and career opportunities, industry collaborations,
+              and resources that empower you to achieve your professional goals.
             </p>
 
-            <div className="flex flex-wrap gap-6 sm:gap-10">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-2xl sm:text-3xl font-bold text-brand">{stat.value}</p>
-                  <p className="text-gray-500 text-xs sm:text-sm">{stat.label}</p>
+            {/* Small animated indicators */}
+            <div className="hero-indicators">
+              <span className="hero-indicator" />
+              <span className="hero-indicator hero-indicator-delay-one" />
+              <span className="hero-indicator hero-indicator-delay-two" />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      {/* =====================================================
+          SECTION 1
+      ====================================================== */}
+      <section
+        ref={setSectionRef('intro')}
+        className="reveal-section max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-12 lg:py-16"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+          {/* Text */}
+          <div className="reveal-content reveal-left">
+
+            <p className="section-kicker">
+              New Opportunities
+            </p>
+
+            <h2 className="section-heading">
+              Explore Opportunities.
+              <br />
+              <span>Build Your Future.</span>
+            </h2>
+
+            <p className="section-description">
+              BIIT Career Services connects talented students with meaningful
+              internship opportunities that help transform academic knowledge
+              into practical professional experience. Students gain exposure
+              to real workplaces, industry expectations, and valuable career
+              pathways.
+            </p>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-7 sm:gap-10 mt-7">
+              {stats.map((stat, index) => (
+                <div
+                  key={stat.label}
+                  className="stat-item"
+                  style={{
+                    animationDelay: `${index * 120}ms`,
+                  }}
+                >
+                  <p className="stat-value">
+                    {stat.value}
+                  </p>
+
+                  <p className="stat-label">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
+
           </div>
 
-          <img
-            src={teamPhoto}
-            alt="BIIT Career Services team"
-            className="rounded-2xl w-full h-64 sm:h-80 lg:h-96 object-cover"
-          />
+          {/* Image */}
+          <div className="reveal-content reveal-right image-wrapper">
+            <div className="image-decoration" />
+
+            <img
+              src={teamPhoto}
+              alt="BIIT Career Services team"
+              className="opportunity-image"
+            />
+
+            <div className="image-caption">
+              <span>Career Opportunities</span>
+              <ArrowUpRight size={17} />
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* Why internships matter */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <img
-            src={meetingPhoto}
-            alt="Career mentorship meeting"
-            className="rounded-2xl w-full h-64 sm:h-72 object-cover order-2 lg:order-1"
-          />
 
-          <div className="order-1 lg:order-2">
-            <p className="text-brand text-xs font-bold uppercase tracking-wide mb-2">
-              Why Internships Matter
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-              Real Experience.
-              <br />
-              <span className="text-brand">Real Impact.</span>
-            </h2>
-            <p className="text-gray-500 text-sm mb-5">
-              Internships bridge the gap between academic environments and
-              professional settings, giving students the opportunity to
-              apply their knowledge to real-world challenges.
-            </p>
+      {/* =====================================================
+          SECTION 2
+      ====================================================== */}
+      <section
+        ref={setSectionRef('experience')}
+        className="reveal-section bg-gray-50/70"
+      >
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-12 lg:py-16">
 
-            <ul className="space-y-3">
-              {experiencePoints.map((point) => (
-                <li key={point} className="flex items-start gap-2 text-sm text-gray-700">
-                  <Check size={16} className="text-brand shrink-0 mt-0.5" />
-                  {point}
-                </li>
-              ))}
-            </ul>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+            {/* Image */}
+            <div className="reveal-content reveal-left image-wrapper order-2 lg:order-1">
+              <div className="image-decoration image-decoration-right" />
+
+              <img
+                src={meetingPhoto}
+                alt="Career mentorship meeting"
+                className="opportunity-image"
+              />
+
+              <div className="image-caption">
+                <span>Industry Mentorship</span>
+                <ArrowUpRight size={17} />
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="reveal-content reveal-right order-1 lg:order-2">
+
+              <p className="section-kicker">
+                Why Internships Matter
+              </p>
+
+              <h2 className="section-heading">
+                Real Experience.
+                <br />
+                <span>Real Impact.</span>
+              </h2>
+
+              <p className="section-description">
+                Internships bridge the gap between academic environments and
+                professional settings, giving students the opportunity to
+                apply their knowledge to real-world challenges while building
+                confidence and professional connections.
+              </p>
+
+              <ul className="space-y-3.5 mt-6">
+                {experiencePoints.map((point, index) => (
+                  <li
+                    key={point}
+                    className="feature-item"
+                    style={{
+                      transitionDelay: `${index * 80}ms`,
+                    }}
+                  >
+                    <span className="feature-icon">
+                      <Check size={15} />
+                    </span>
+
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+
+            </div>
+
           </div>
+
         </div>
       </section>
 
-      {/* Program highlights */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <p className="text-brand text-xs font-bold uppercase tracking-wide mb-2">
+
+      {/* =====================================================
+          SECTION 3
+      ====================================================== */}
+      <section
+        ref={setSectionRef('collaboration')}
+        className="reveal-section max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-12 lg:py-16"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+          {/* Text */}
+          <div className="reveal-content reveal-left">
+
+            <p className="section-kicker">
               Program Highlights
             </p>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">Collaborative Excellence</h2>
-            <p className="text-gray-500 text-sm mb-5">
-              At BIIT, we foster an environment where students work together
-              on real-world problems, guided by industry-standard practices
-              and peer-to-peer mentorship.
+
+            <h2 className="section-heading">
+              Collaborative Excellence
+            </h2>
+
+            <p className="section-description">
+              At BIIT, students are encouraged to work together on real-world
+              problems while learning from peers, mentors, and industry
+              professionals. These experiences create a strong environment
+              for learning, innovation, and professional growth.
             </p>
 
-            <ul className="space-y-3">
-              {collaborationPoints.map((point) => (
-                <li key={point} className="flex items-start gap-2 text-sm text-gray-700">
-                  <Check size={16} className="text-brand shrink-0 mt-0.5" />
-                  {point}
+            <ul className="space-y-3.5 mt-6">
+              {collaborationPoints.map((point, index) => (
+                <li
+                  key={point}
+                  className="feature-item"
+                  style={{
+                    transitionDelay: `${index * 80}ms`,
+                  }}
+                >
+                  <span className="feature-icon">
+                    <Check size={15} />
+                  </span>
+
+                  <span>{point}</span>
                 </li>
               ))}
             </ul>
+
           </div>
 
-          <img
-            src={groupPhoto}
-            alt="Students collaborating"
-            className="rounded-2xl w-full h-64 sm:h-72 object-cover"
-          />
+          {/* Image */}
+          <div className="reveal-content reveal-right image-wrapper">
+
+            <div className="image-decoration" />
+
+            <img
+              src={groupPhoto}
+              alt="Students collaborating"
+              className="opportunity-image"
+            />
+
+            <div className="image-caption">
+              <span>Collaborative Learning</span>
+              <ArrowUpRight size={17} />
+            </div>
+
+          </div>
+
         </div>
       </section>
-    </div>
+
+    </main>
   );
 };
 

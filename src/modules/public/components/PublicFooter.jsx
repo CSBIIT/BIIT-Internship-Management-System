@@ -9,24 +9,14 @@ const footerLinks = [
 
 const PublicFooter = () => {
   return (
-    <footer className="bg-brand px-4 sm:px-6 lg:px-10 py-4 sm:py-5">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 max-w-7xl mx-auto text-xs sm:text-sm text-white/80">
-        <p className="text-center sm:text-left">
-          © 2026 BIIT University Management System. All rights reserved.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6">
-          {footerLinks.map((link, index) => (
-            <span key={link.to} className="flex items-center">
-              <Link 
-                to={link.to} 
-                className="hover:text-white transition-colors whitespace-nowrap"
-              >
-                {link.label}
-              </Link>
-              {index < footerLinks.length - 1 && (
-                <span className="hidden sm:inline ml-3 sm:ml-4 md:ml-6 text-white/30">|</span>
-              )}
-            </span>
+    <footer className="bg-brand px-4 sm:px-6 lg:px-10 py-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 max-w-7xl mx-auto text-xs text-white/80 text-center sm:text-left">
+        <p className="whitespace-nowrap shrink-0">© 2026 BIIT University Management System. All rights reserved.</p>
+        <div className="flex flex-wrap sm:flex-nowrap justify-center items-center gap-x-3 sm:gap-x-4 lg:gap-x-6 gap-y-1">
+          {footerLinks.map((link) => (
+            <Link key={link.to} to={link.to} className="hover:text-white whitespace-nowrap">
+              {link.label}
+            </Link>
           ))}
         </div>
       </div>

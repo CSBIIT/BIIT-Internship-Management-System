@@ -9,8 +9,13 @@ import MyProfilePage from '../modules/student/pages/MyProfilePage';
 import ShareProfilePage from '../modules/student/pages/ShareProfilePage';
 import SettingsPage from '../modules/student/pages/SettingsPage';
 
+// Edit Profile uses its own lighter layout (topbar + footer only, no main sidebar)
+import EditProfileLayout from '../modules/student/components/profile/EditProfileLayout';
+import EditProfilePage from '../modules/student/pages/EditProfilePage';
+
 const StudentRoutes = (
   <Route element={<ProtectedRoute allowedRole="student" />}>
+    {/* Main student area: full sidebar + topbar + footer */}
     <Route path="student" element={<StudentLayout />}>
       <Route index element={<DashboardPage />} />
       <Route path="dashboard" element={<DashboardPage />} />
@@ -20,6 +25,11 @@ const StudentRoutes = (
       <Route path="my-profile" element={<MyProfilePage />} />
       <Route path="my-profile/share" element={<ShareProfilePage />} />
       <Route path="settings" element={<SettingsPage />} />
+    </Route>
+
+    {/* Edit Profile: topbar + footer only, no main sidebar */}
+    <Route path="student" element={<EditProfileLayout />}>
+      <Route path="my-profile/edit" element={<EditProfilePage />} />
     </Route>
   </Route>
 );
