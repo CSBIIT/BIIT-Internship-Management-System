@@ -1,17 +1,21 @@
-import { Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import ScrollToTop from '../components/common/ScrollToTop';
 import PublicRoutes from './PublicRoutes';
 import StudentRoutes from './StudentRoutes';
-// import CompanyRoutes from './CompanyRoutes'; // uncomment once Company module is built
-// import AdminRoutes from './AdminRoutes';     // uncomment once Admin module is built
+import CompanyRoutes from './CompanyRoutes';
+import FooterInfoPage from '../modules/public/pages/FooterInfoPage';
 
 const AppRouter = () => {
   return (
-    <Routes>
-      {PublicRoutes}
-      {StudentRoutes}
-      {/* {CompanyRoutes} */}
-      {/* {AdminRoutes} */}
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        {PublicRoutes}
+        {StudentRoutes}
+        {CompanyRoutes}
+        <Route path="info" element={<FooterInfoPage />} />
+      </Routes>
+    </>
   );
 };
 

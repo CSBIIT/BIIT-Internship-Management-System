@@ -8,6 +8,7 @@ import JobDescriptionPage from '../modules/student/pages/JobDescriptionPage';
 import MyProfilePage from '../modules/student/pages/MyProfilePage';
 import ShareProfilePage from '../modules/student/pages/ShareProfilePage';
 import SettingsPage from '../modules/student/pages/SettingsPage';
+import NotificationsPage from '../modules/student/pages/NotificationsPage';
 
 // Edit Profile uses its own lighter layout (topbar + footer only, no main sidebar)
 import EditProfileLayout from '../modules/student/components/profile/EditProfileLayout';
@@ -25,6 +26,7 @@ const StudentRoutes = (
       <Route path="my-profile" element={<MyProfilePage />} />
       <Route path="my-profile/share" element={<ShareProfilePage />} />
       <Route path="settings" element={<SettingsPage />} />
+      <Route path="notifications" element={<NotificationsPage />} />
     </Route>
 
     {/* Edit Profile: topbar + footer only, no main sidebar */}

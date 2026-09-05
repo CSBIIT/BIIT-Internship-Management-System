@@ -7,18 +7,23 @@ import AboutPage from '../modules/public/pages/AboutPage';
 import ContactPage from '../modules/public/pages/ContactPage';
 import LoginPage from '../modules/auth/pages/LoginPage';
 import SignupPage from '../modules/auth/pages/SignupPage';
+import CompanyLoginPage from '../modules/auth/pages/CompanyLoginPage';
+import CompanySignupPage from '../modules/auth/pages/CompanySignupPage';
+import FooterInfoPage from '../modules/public/pages/FooterInfoPage';
 
 const PublicRoutes = (
   <Route element={<PublicLayout />}>
     <Route index element={<LandingPage />} />
+    <Route path="home" element={<LandingPage />} />
     <Route path="get-started" element={<SelectRolePage />} />
     <Route path="opportunities" element={<OpportunitiesPage />} />
     <Route path="about" element={<AboutPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
     <Route path="signup" element={<SignupPage />} />
-    {/* Company auth routes: add once Company module login page is built */}
-    {/* <Route path="company/login" element={<CompanyLoginPage />} /> */}
+    <Route path="company/login" element={<CompanyLoginPage />} />
+    <Route path="company/signup" element={<CompanySignupPage />} />
+    
   </Route>
 );
 

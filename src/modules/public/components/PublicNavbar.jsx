@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import Logo from '../../../components/common/Logo';
 
 const navLinks = [
+  { label: 'Home', to: '/home' },
   { label: 'Opportunities', to: '/opportunities' },
   { label: 'About', to: '/about' },
   { label: 'Contact Us', to: '/contact' },

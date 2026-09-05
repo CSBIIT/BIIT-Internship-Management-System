@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Copy, Check, Share2, Link2, Mail, MessageCircle } from 'lucide-react';
+import {
+  Copy,
+  Check,
+  Share2,
+  Link2,
+  Mail,
+  MessageCircle,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react';
+
 import ProfileHeader from '../components/profile/ProfileHeader';
 import Button from '../../../components/common/Button';
 
@@ -14,6 +24,48 @@ const profile = {
 
 const profileLink = 'https://biit.edu.pk/profile/ali-khan';
 
+/*
+  ============================================================
+  CONSISTENT CARD STYLE
+  ------------------------------------------------------------
+  Same hover interaction used throughout the Dashboard:
+  - Lift on hover
+  - Shadow on hover
+  - Smooth 300ms transition
+  - Green animated top line
+  ============================================================
+*/
+
+const cardClass = `
+  group
+  relative
+  overflow-hidden
+  rounded-2xl
+  border
+  border-gray-100
+  bg-white
+  shadow-sm
+  transition-all
+  duration-300
+  ease-out
+  hover:-translate-y-1
+  hover:shadow-lg
+`;
+
+const greenTopLine = `
+  pointer-events-none
+  absolute
+  left-0
+  top-0
+  z-20
+  h-0.5
+  w-0
+  bg-brand
+  transition-all
+  duration-300
+  group-hover:w-full
+`;
+
 const ShareProfilePage = () => {
   const [copied, setCopied] = useState(false);
 
@@ -21,7 +73,10 @@ const ShareProfilePage = () => {
     try {
       await navigator.clipboard.writeText(profileLink);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
     } catch (err) {
       console.error('Failed to copy link', err);
     }
@@ -33,14 +88,18 @@ const ShareProfilePage = () => {
       label: 'LinkedIn',
       iconBg: 'bg-blue-50',
       iconColor: 'text-blue-600',
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileLink)}`,
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+        profileLink
+      )}`,
     },
     {
       icon: Mail,
       label: 'Email',
       iconBg: 'bg-gray-100',
       iconColor: 'text-gray-600',
-      href: `mailto:?subject=Check out my profile&body=${encodeURIComponent(profileLink)}`,
+      href: `mailto:?subject=Check out my profile&body=${encodeURIComponent(
+        profileLink
+      )}`,
     },
     {
       icon: MessageCircle,
@@ -52,56 +111,398 @@ const ShareProfilePage = () => {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-0">
-      <ProfileHeader profile={profile} showActions={false} />
+    <div className="max-w-2xl mx-auto px-4 sm:px-0 overflow-hidden">
 
-      {/* Your Profile Link */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 mt-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Link2 size={16} className="text-brand shrink-0" />
-          <h2 className="font-semibold text-sm">Your Profile Link</h2>
-        </div>
+      {/* =====================================================
+          PROFILE HEADER
+      ====================================================== */}
 
-        <div className="flex flex-col sm:flex-row gap-2">
-          <input
-            readOnly
-            value={profileLink}
-            className="flex-1 min-w-0 text-sm bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-600 truncate"
-          />
-          <Button
-            icon={copied ? Check : Copy}
-            onClick={handleCopy}
-            className="text-sm px-4 py-2 shrink-0 justify-center w-full sm:w-auto"
-          >
-            {copied ? 'Copied' : 'Copy Link'}
-          </Button>
-        </div>
+      <div
+        className="animate-fade-in-up"
+        style={{
+          animationDelay: '0ms',
+        }}
+      >
+        <ProfileHeader
+          profile={profile}
+          showActions={false}
+        />
       </div>
 
-      {/* Share via */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 mt-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Share2 size={16} className="text-brand shrink-0" />
-          <h2 className="font-semibold text-sm">Share via</h2>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          {shareLinks.map(({ icon: Icon, label, iconBg, iconColor, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 border border-gray-200 rounded-lg py-2.5 text-sm font-medium text-gray-700 hover:border-brand hover:bg-brand-light/40 transition-colors"
-            >
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${iconBg}`}>
-                <Icon size={13} className={iconColor} />
+      {/* =====================================================
+          PROFILE LINK
+      ====================================================== */}
+
+      <div
+        className={`
+          ${cardClass}
+          mt-4
+          p-4
+          animate-fade-in-up
+          sm:p-5
+        `}
+        style={{
+          animationDelay: '150ms',
+        }}
+      >
+
+        {/* Same green hover line as Dashboard */}
+        <div className={greenTopLine} />
+
+        <div className="relative z-10">
+
+          {/* Section Heading */}
+          <div className="mb-3 flex items-center justify-between">
+
+            <div className="flex items-center gap-2">
+
+              <span
+                className="
+                  flex
+                  h-8
+                  w-8
+                  items-center
+                  justify-center
+                  rounded-lg
+                  bg-brand-light
+                  text-brand
+                  transition-all
+                  duration-300
+                  group-hover:scale-105
+                "
+              >
+                <Link2 size={15} />
               </span>
-              {label}
-            </a>
-          ))}
+
+              <div>
+
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">
+                  Profile Sharing
+                </p>
+
+                <h2 className="text-sm font-semibold text-gray-900">
+                  Your Profile Link
+                </h2>
+
+              </div>
+
+            </div>
+
+            <Sparkles
+              size={15}
+              className="
+                text-gray-200
+                transition-all
+                duration-300
+                group-hover:rotate-12
+                group-hover:text-brand
+              "
+            />
+
+          </div>
+
+
+          {/* Link + Copy */}
+          <div className="flex flex-col gap-2 sm:flex-row">
+
+            <div className="relative min-w-0 flex-1">
+
+              <input
+                readOnly
+                value={profileLink}
+                className="
+                  w-full
+                  min-w-0
+                  rounded-lg
+                  border
+                  border-gray-200
+                  bg-gray-50
+                  px-3
+                  py-2
+                  text-sm
+                  text-gray-600
+                  outline-none
+                  transition-all
+                  duration-300
+                  focus:border-brand
+                  focus:bg-white
+                "
+              />
+
+            </div>
+
+            <Button
+              icon={copied ? Check : Copy}
+              onClick={handleCopy}
+              className="
+                w-full
+                shrink-0
+                justify-center
+                px-4
+                py-2
+                text-sm
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:shadow-md
+                sm:w-auto
+              "
+            >
+              {copied ? 'Copied' : 'Copy Link'}
+            </Button>
+
+          </div>
+
         </div>
+
       </div>
+
+
+      {/* =====================================================
+          SHARE VIA
+      ====================================================== */}
+
+      <div
+        className={`
+          ${cardClass}
+          mt-4
+          p-4
+          animate-fade-in-up
+          sm:p-5
+        `}
+        style={{
+          animationDelay: '300ms',
+        }}
+      >
+
+        {/* Same green hover line */}
+        <div className={greenTopLine} />
+
+        <div className="relative z-10">
+
+          {/* Section Heading */}
+          <div className="mb-4 flex items-center justify-between">
+
+            <div className="flex items-center gap-2">
+
+              <span
+                className="
+                  flex
+                  h-8
+                  w-8
+                  items-center
+                  justify-center
+                  rounded-lg
+                  bg-brand-light
+                  text-brand
+                  transition-all
+                  duration-300
+                  group-hover:scale-105
+                "
+              >
+                <Share2 size={15} />
+              </span>
+
+              <div>
+
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand">
+                  Spread The Word
+                </p>
+
+                <h2 className="text-sm font-semibold text-gray-900">
+                  Share via
+                </h2>
+
+              </div>
+
+            </div>
+
+            <Sparkles
+              size={15}
+              className="
+                text-gray-200
+                transition-all
+                duration-300
+                group-hover:rotate-12
+                group-hover:text-brand
+              "
+            />
+
+          </div>
+
+
+          {/* Share Options */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+
+            {shareLinks.map(
+              ({ icon: Icon, label, iconBg, iconColor, href }, index) => (
+
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    group/share
+                    relative
+                    flex
+                    items-center
+                    justify-between
+                    overflow-hidden
+                    rounded-xl
+                    border
+                    border-gray-100
+                    bg-white
+                    px-3
+                    py-3
+                    text-sm
+                    font-medium
+                    text-gray-700
+                    shadow-sm
+                    animate-fade-in-up
+                    transition-all
+                    duration-300
+                    ease-out
+                    hover:-translate-y-1
+                    hover:border-brand
+                    hover:bg-brand-light/20
+                    hover:shadow-md
+                  "
+                  style={{
+                    animationDelay: `${450 + index * 100}ms`,
+                  }}
+                >
+
+                  {/* Small animated top line */}
+                  <div
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-0
+                      top-0
+                      h-0.5
+                      w-0
+                      bg-brand
+                      transition-all
+                      duration-300
+                      group-hover/share:w-full
+                    "
+                  />
+
+
+                  <div className="flex items-center gap-3">
+
+                    {/* Icon */}
+                    <span
+                      className={`
+                        flex
+                        h-9
+                        w-9
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-lg
+                        ${iconBg}
+                        transition-all
+                        duration-300
+                        group-hover/share:scale-105
+                      `}
+                    >
+                      <Icon
+                        size={15}
+                        className={iconColor}
+                      />
+                    </span>
+
+
+                    {/* Label */}
+                    <span>
+                      {label}
+                    </span>
+
+                  </div>
+
+
+                  {/* Arrow */}
+                  <ArrowRight
+                    size={14}
+                    className="
+                      text-gray-300
+                      transition-all
+                      duration-300
+                      group-hover/share:translate-x-1
+                      group-hover/share:text-brand
+                    "
+                  />
+
+                </a>
+
+              )
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {/* =====================================================
+          HELPFUL INFO
+      ====================================================== */}
+
+      <div
+        className={`
+          ${cardClass}
+          mt-4
+          p-4
+          animate-fade-in-up
+          sm:p-5
+        `}
+        style={{
+          animationDelay: '800ms',
+        }}
+      >
+
+        <div className={greenTopLine} />
+
+        <div className="relative z-10 flex items-start gap-3">
+
+          <span
+            className="
+              flex
+              h-8
+              w-8
+              shrink-0
+              items-center
+              justify-center
+              rounded-lg
+              bg-brand-light
+              text-brand
+            "
+          >
+            <Sparkles size={14} />
+          </span>
+
+          <div>
+
+            <p className="mb-1 text-sm font-semibold text-gray-800">
+              Make your profile stand out
+            </p>
+
+            <p className="text-xs leading-5 text-gray-500">
+              Share your profile with recruiters, companies, and your
+              professional network to increase your chances of discovering
+              new opportunities.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   );
 };

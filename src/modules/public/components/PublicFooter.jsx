@@ -10,16 +10,12 @@ const footerLinks = [
 const PublicFooter = () => {
   return (
     <footer className="bg-brand px-4 sm:px-6 lg:px-10 py-4">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 max-w-7xl mx-auto text-xs text-white/80 text-center sm:text-left">
-        <p className="whitespace-nowrap shrink-0">© 2026 BIIT University Management System. All rights reserved.</p>
-        <div className="flex flex-wrap sm:flex-nowrap justify-center items-center gap-x-3 sm:gap-x-4 lg:gap-x-6 gap-y-1">
-          {footerLinks.map((link) => (
-            <Link key={link.to} to={link.to} className="hover:text-white whitespace-nowrap">
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/80">
+  <span>© 2026 BIIT Internship Management System. All rights reserved.</span>
+<Link to="/info#support" className="hover:text-white hover:underline">Support Center</Link>
+<Link to="/info#privacy" className="hover:text-white hover:underline">Privacy Policy</Link>
+<Link to="/info#terms" className="hover:text-white hover:underline">Terms of Service</Link>
+<Link to="/info#contact" className="hover:text-white hover:underline">Contact Career Services</Link></div>
     </footer>
   );
 };

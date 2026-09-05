@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   FileText,
@@ -9,7 +10,10 @@ import {
   LogOut,
   X,
 } from 'lucide-react';
+
 import Logo from '../../../../components/common/Logo';
+import LogoutModal from '../../../../components/common/LogoutModal';
+import { useAuth } from '../../../../context/AuthContext';
 
 const overviewLinks = [
   { label: 'Dashboard', to: '/student/dashboard', icon: LayoutDashboard },
@@ -27,87 +31,370 @@ const NavItem = ({ label, to, icon: Icon, onClick }) => (
     to={to}
     onClick={onClick}
     className={({ isActive }) =>
-      `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-        isActive
-          ? 'bg-brand text-white'
-          : 'text-gray-600 hover:bg-brand-light hover:text-brand'
-      }`
+      `
+        group
+        relative
+        flex
+        items-center
+        gap-3
+        overflow-hidden
+        rounded-lg
+        px-4
+        py-2.5
+        text-sm
+        font-medium
+        transition-all
+        duration-300
+        ease-out
+        ${
+          isActive
+            ? 'bg-brand text-white shadow-sm'
+            : 'text-gray-600 hover:-translate-y-0.5 hover:bg-brand-light hover:text-brand hover:shadow-sm'
+        }
+      `
     }
   >
-    <Icon size={18} />
-    {label}
+    {({ isActive }) => (
+      <>
+        <span
+          className={`
+            absolute
+            left-0
+            top-1/2
+            h-5
+            w-0.5
+            -translate-y-1/2
+            rounded-full
+            bg-brand
+            transition-all
+            duration-300
+            ${
+              isActive
+                ? 'opacity-0'
+                : 'opacity-0 group-hover:opacity-100'
+            }
+          `}
+        />
+        <Icon
+          size={18}
+          className={`
+            relative
+            z-10
+            shrink-0
+            transition-all
+            duration-300
+            ${
+              isActive
+                ? ''
+                : 'group-hover:scale-105 group-hover:translate-x-0.5'
+            }
+          `}
+        />
+        <span className="relative z-10">
+          {label}
+        </span>
+        {isActive && (
+          <span
+            className="
+              absolute
+              right-2
+              h-1.5
+              w-1.5
+              rounded-full
+              bg-white/80
+              animate-pulse
+            "
+          />
+        )}
+      </>
+    )}
   </NavLink>
 );
 
-const SidebarContent = ({ onNavigate }) => (
-  <div className="flex flex-col h-full">
-    <div className="px-5 py-6">
-      <Logo className="h-9" />
+const SidebarContent = ({ onNavigate, onLogoutClick }) => (
+  <div className="flex h-full flex-col">
+    {/* Logo */}
+    <div
+      className="
+        px-5
+        py-6
+        animate-fade-in-up
+      "
+      style={{
+        animationDelay: '0ms',
+      }}
+    >
+      <div className="transition-all duration-300 hover:scale-[1.02]">
+        <Logo className="h-9" />
+      </div>
     </div>
 
-    <nav className="flex-1 px-3 space-y-6 overflow-y-auto">
-      <div>
-        <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+    {/* Navigation */}
+    <nav className="flex-1 space-y-6 overflow-y-auto px-3">
+      {/* Overview */}
+      <div
+        className="animate-fade-in-up"
+        style={{
+          animationDelay: '100ms',
+        }}
+      >
+        <p
+          className="
+            mb-2
+            px-4
+            text-xs
+            font-semibold
+            uppercase
+            tracking-wide
+            text-gray-400
+          "
+        >
           Overview
         </p>
         <div className="space-y-1">
-          {overviewLinks.map((link) => (
-            <NavItem key={link.to} {...link} onClick={onNavigate} />
+          {overviewLinks.map((link, index) => (
+            <div
+              key={link.to}
+              className="animate-fade-in-up"
+              style={{
+                animationDelay: `${150 + index * 75}ms`,
+              }}
+            >
+              <NavItem
+                {...link}
+                onClick={onNavigate}
+              />
+            </div>
           ))}
         </div>
       </div>
 
-      <div>
-        <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+      {/* Account */}
+      <div
+        className="animate-fade-in-up"
+        style={{
+          animationDelay: '400ms',
+        }}
+      >
+        <p
+          className="
+            mb-2
+            px-4
+            text-xs
+            font-semibold
+            uppercase
+            tracking-wide
+            text-gray-400
+          "
+        >
           Account
         </p>
         <div className="space-y-1">
-          {accountLinks.map((link) => (
-            <NavItem key={link.to} {...link} onClick={onNavigate} />
+          {accountLinks.map((link, index) => (
+            <div
+              key={link.to}
+              className="animate-fade-in-up"
+              style={{
+                animationDelay: `${450 + index * 75}ms`,
+              }}
+            >
+              <NavItem
+                {...link}
+                onClick={onNavigate}
+              />
+            </div>
           ))}
         </div>
       </div>
     </nav>
 
-    <div className="px-3 pb-6 space-y-1 border-t border-gray-100 pt-4">
-      <NavItem label="Notifications" to="/student/notifications" icon={Bell} onClick={onNavigate} />
+    {/* Bottom Actions */}
+    <div
+      className="
+        space-y-1
+        border-t
+        border-gray-100
+        px-3
+        pb-6
+        pt-4
+        animate-fade-in-up
+      "
+      style={{
+        animationDelay: '600ms',
+      }}
+    >
+      <NavItem
+        label="Notifications"
+        to="/student/notifications"
+        icon={Bell}
+        onClick={onNavigate}
+      />
+
+      {/* Logout */}
       <button
-        onClick={() => {
-          // TODO: wire to AuthContext logout()
-          console.log('Logging out...');
-        }}
-        className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors w-full"
+        onClick={onLogoutClick}
+        className="
+          group
+          relative
+          flex
+          w-full
+          items-center
+          gap-3
+          overflow-hidden
+          rounded-lg
+          px-4
+          py-2.5
+          text-sm
+          font-medium
+          text-gray-600
+          transition-all
+          duration-300
+          ease-out
+          hover:-translate-y-0.5
+          hover:bg-red-50
+          hover:text-red-600
+          hover:shadow-sm
+        "
       >
-        <LogOut size={18} />
-        Logout
+        <span
+          className="
+            absolute
+            left-0
+            top-1/2
+            h-5
+            w-0.5
+            -translate-y-1/2
+            rounded-full
+            bg-red-500
+            opacity-0
+            transition-all
+            duration-300
+            group-hover:opacity-100
+          "
+        />
+        <LogOut
+          size={18}
+          className="
+            relative
+            z-10
+            transition-all
+            duration-300
+            group-hover:translate-x-0.5
+            group-hover:scale-105
+          "
+        />
+        <span className="relative z-10">
+          Logout
+        </span>
       </button>
     </div>
   </div>
 );
 
 const StudentSidebar = ({ mobileOpen, onClose }) => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogoutConfirm = () => {
+    logout();
+    setShowLogoutModal(false);
+    navigate('/login', { replace: true });
+  };
+
   return (
     <>
-      {/* Desktop sidebar — always visible */}
-      <aside className="hidden lg:block w-64 shrink-0 border-r border-gray-100 bg-white h-screen sticky top-0">
-        <SidebarContent />
+      {/* Desktop Sidebar */}
+      <aside
+        className="
+          sticky
+          top-0
+          hidden
+          h-screen
+          w-64
+          shrink-0
+          border-r
+          border-gray-100
+          bg-white
+          lg:block
+        "
+      >
+        <SidebarContent onNavigate={() => {}} onLogoutClick={() => setShowLogoutModal(true)} />
       </aside>
 
-      {/* Mobile drawer */}
+      {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-          <div className="relative w-72 max-w-[80%] bg-white h-full shadow-xl">
+        <div
+          className="
+            fixed
+            inset-0
+            z-50
+            flex
+            lg:hidden
+          "
+        >
+          <div
+            className="
+              absolute
+              inset-0
+              bg-black/40
+              animate-fade-in
+            "
+            onClick={onClose}
+          />
+          <div
+            className="
+              relative
+              h-full
+              w-72
+              max-w-[80%]
+              bg-white
+              shadow-xl
+              animate-[slide-in-left_300ms_ease-out]
+            "
+          >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="
+                group
+                absolute
+                right-4
+                top-4
+                z-20
+                flex
+                h-8
+                w-8
+                items-center
+                justify-center
+                rounded-lg
+                text-gray-400
+                transition-all
+                duration-300
+                hover:bg-gray-100
+                hover:text-gray-700
+                hover:rotate-90
+              "
+              aria-label="Close menu"
             >
-              <X size={22} />
+              <X size={20} />
             </button>
-            <SidebarContent onNavigate={onClose} />
+            <SidebarContent
+              onNavigate={onClose}
+              onLogoutClick={() => {
+                onClose();
+                setShowLogoutModal(true);
+              }}
+            />
           </div>
         </div>
       )}
+
+      {/* Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleLogoutConfirm}
+      />
     </>
   );
 };
