@@ -6,6 +6,7 @@ import PasswordInput from '../../../components/common/PasswordInput';
 import Button from '../../../components/common/Button';
 import { useAuth } from '../../../context/AuthContext';
 
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -14,6 +15,7 @@ const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -37,13 +39,68 @@ const LoginForm = () => {
 
     setLoading(true);
     try {
-      console.log('Logging in with', formData, 'Remember me:', rememberMe);
-      login({ name: 'Ali Khan', email: formData.email, role: 'student' });
+      const res = await fetch('http://127.0.0.1:8001/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrors({ form: data.message });
+        return;
+      }
+
+      // Handle "Remember Me" storage
+      if (rememberMe) {
+        localStorage.setItem('token', data.token);
+      } else {
+        sessionStorage.setItem('token', data.token);
+      }
+
+      login(data.user);
       navigate('/student/dashboard');
     } catch (err) {
       setErrors({ form: 'Invalid email or password. Please try again.' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Forgot Password API Call Handler
+  const handleForgotPassword = async () => {
+    if (!formData.email) {
+      setErrors({ email: 'Please enter your BIIT email address first.' });
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setErrors({ email: 'Enter a valid BIIT email address.' });
+      return;
+    }
+
+    setForgotLoading(true);
+    try {
+      const res = await fetch('http://127.0.0.1:8001/api/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || 'Failed to send reset email.');
+        return;
+      }
+
+      // Displays success alert returned from AuthController.php
+      alert(data.message);
+    } catch (err) {
+      alert('Unable to connect to the server. Please try again.');
+    } finally {
+      setForgotLoading(false);
     }
   };
 
@@ -134,12 +191,17 @@ const LoginForm = () => {
               <span>Remember Me</span>
             </label>
 
-            <Link to="/forgot-password" className="font-medium text-brand transition-colors duration-200 hover:text-brand-dark hover:underline">
-              Forgot Password?
-            </Link>
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              disabled={forgotLoading}
+              className="font-medium text-brand transition-colors duration-200 hover:text-brand-dark hover:underline disabled:opacity-50"
+            >
+              {forgotLoading ? 'Sending...' : 'Forgot Password?'}
+            </button>
           </div>
 
-          {/* Login button — mt-auto removed, natural spacing now */}
+          {/* Login button */}
           <Button
             type="submit"
             className="

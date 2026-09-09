@@ -115,9 +115,6 @@ export const ResumeCard = ({ fileName, updatedAgo, fileSize }) => (
       </div>
     </div>
     <div className="flex gap-2 shrink-0">
-      <button className="flex items-center gap-1.5 text-xs font-medium border border-gray-200 rounded-lg px-3.5 py-2 hover:bg-gray-50">
-        <Upload size={13} /> Replace
-      </button>
       <button className="flex items-center gap-1.5 text-xs font-medium bg-brand text-white rounded-lg px-3.5 py-2 hover:bg-brand-dark">
         <Download size={13} /> Download
       </button>

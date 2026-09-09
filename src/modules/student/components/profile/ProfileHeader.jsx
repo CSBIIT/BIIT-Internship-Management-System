@@ -3,11 +3,14 @@ import { Pencil, Share2, MapPin, Camera } from 'lucide-react';
 import Button from '../../../../components/common/Button';
 
 const ProfileHeader = ({ profile, showActions = true }) => {
-  const { name, degree, semester, university, location, photoUrl } = profile;
+  const { name, degree, semester, university, location, photoUrl, coverPhotoUrl } = profile;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-      <div className="h-16 sm:h-20 bg-gradient-to-r from-brand to-brand-dark" />
+      <div
+        className="h-16 sm:h-20 bg-gradient-to-r from-brand to-brand-dark bg-cover bg-center"
+        style={coverPhotoUrl ? { backgroundImage: `url(${coverPhotoUrl})` } : undefined}
+      />
 
       <div className="px-5 sm:px-6 pb-6">
         {/* Photo overlaps the banner slightly */}
@@ -21,11 +24,7 @@ const ProfileHeader = ({ profile, showActions = true }) => {
               </div>
             )}
           </div>
-          {showActions && (
-            <button className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-white shadow-md flex items-center justify-center border border-gray-100 hover:bg-gray-50">
-              <Camera size={13} className="text-gray-500" />
-            </button>
-          )}
+          
         </div>
 
         {/* Name, details, and buttons sit below the photo, fully clear of the banner */}

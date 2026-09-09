@@ -1,17 +1,30 @@
-import { useState } from 'react';
-import { User, Lock, Bell, Sun, Moon, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { User, Lock, Bell, Sparkles } from 'lucide-react';
 
 import Input from '../../../components/common/Input';
 import PasswordInput from '../../../components/common/PasswordInput';
 import Button from '../../../components/common/Button';
 import { SectionCard } from '../components/profile/ProfileSections';
+import { useProfile } from '../../../context/ProfileContext';
 
 const SettingsPage = () => {
+  const { profileData, updateUserName } = useProfile();
+
   const [accountData, setAccountData] = useState({
-    fullName: 'Ali Khan',
+    fullName: profileData?.basic?.name || 'Ali Khan',
     studentId: '2023-ARID-0000',
-    email: 'ali.khan@biit.edu.pk',
+    email: profileData?.basic?.email || 'ali.khan@biit.edu.pk',
   });
+
+  // Keep local input in sync if profileData changes externally
+  useEffect(() => {
+    if (profileData?.basic?.name) {
+      setAccountData((prev) => ({
+        ...prev,
+        fullName: profileData.basic.name,
+      }));
+    }
+  }, [profileData?.basic?.name]);
 
   const [passwordData, setPasswordData] = useState({
     current: '',
@@ -22,7 +35,6 @@ const SettingsPage = () => {
   const [passwordError, setPasswordError] = useState('');
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [appearance, setAppearance] = useState('light');
   const [saved, setSaved] = useState(false);
 
   const handleAccountChange = (e) => {
@@ -56,7 +68,6 @@ const SettingsPage = () => {
       return;
     }
 
-    // TODO: replace with real API call
     console.log('Updating password...');
 
     setPasswordData({
@@ -67,11 +78,14 @@ const SettingsPage = () => {
   };
 
   const handleSaveChanges = () => {
-    // TODO: replace with real API call
+    // ✅ Synchronize user name globally to ProfileContext
+    if (accountData.fullName.trim()) {
+      updateUserName(accountData.fullName.trim());
+    }
+
     console.log('Saving settings:', {
       accountData,
       notificationsEnabled,
-      appearance,
     });
 
     setSaved(true);
@@ -82,7 +96,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="max-w-4xl space-y-6 overflow-hidden">
+    <div className="mx-auto w-full max-w-full px-3 py-3 sm:px-4 sm:py-4 lg:px-8 lg:py-6 xl:px-10">
 
       {/* =====================================================
           PAGE HEADER
@@ -97,7 +111,7 @@ const SettingsPage = () => {
           border
           border-gray-100
           bg-white
-          p-5
+          p-4
           shadow-sm
           animate-fade-in-up
           transition-all
@@ -107,9 +121,7 @@ const SettingsPage = () => {
           hover:shadow-lg
           sm:p-6
         "
-        style={{
-          animationDelay: '0ms',
-        }}
+        style={{ animationDelay: '0ms' }}
       >
 
         {/* Animated green top line */}
@@ -173,7 +185,6 @@ const SettingsPage = () => {
 
           {/* Small label */}
           <div className="mb-2 flex items-center gap-2">
-
             <Sparkles
               size={15}
               className="
@@ -196,7 +207,6 @@ const SettingsPage = () => {
             >
               Account Preferences
             </span>
-
           </div>
 
           <h1 className="mb-1 text-xl font-bold text-gray-900 sm:text-2xl">
@@ -208,7 +218,6 @@ const SettingsPage = () => {
           </p>
 
         </div>
-
       </div>
 
 
@@ -216,17 +225,24 @@ const SettingsPage = () => {
           SETTINGS CONTENT
       ====================================================== */}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div
+        className="
+          mt-4
+          grid
+          grid-cols-1
+          gap-4
+          sm:mt-6
+          sm:gap-6
+          lg:grid-cols-12
+          lg:items-start
+        "
+      >
 
-        {/* ===================================================
-            LEFT COLUMN
-        ==================================================== */}
+        {/* =================================================
+            ACCOUNT INFORMATION
+        ================================================== */}
 
-        <div className="space-y-6 lg:col-span-2">
-
-          {/* =================================================
-              ACCOUNT INFORMATION
-          ================================================== */}
+        <div className="lg:col-span-8">
 
           <div
             className="
@@ -241,9 +257,7 @@ const SettingsPage = () => {
               hover:-translate-y-1
               hover:shadow-lg
             "
-            style={{
-              animationDelay: '150ms',
-            }}
+            style={{ animationDelay: '150ms' }}
           >
 
             {/* Animated green line */}
@@ -284,31 +298,41 @@ const SettingsPage = () => {
               "
             />
 
-            <div className="relative z-10">
+            <div className="relative z-10 bg-white p-4 sm:p-6">
+
               <SectionCard
                 title="Account Information"
                 icon={User}
               >
+
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-                  <Input
-                    label="Full Name"
-                    name="fullName"
-                    value={accountData.fullName}
-                    onChange={handleAccountChange}
-                  />
+                  <div className="w-full">
+                    <Input
+                      label="Full Name"
+                      name="fullName"
+                      value={accountData.fullName}
+                      onChange={handleAccountChange}
+                      className="w-full text-sm sm:text-base"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
 
-                  <Input
-                    label="Student ID"
-                    name="studentId"
-                    value={accountData.studentId}
-                    onChange={handleAccountChange}
-                    disabled
-                  />
+                  <div className="w-full">
+                    <Input
+                      label="Student ID"
+                      name="studentId"
+                      value={accountData.studentId}
+                      onChange={handleAccountChange}
+                      disabled
+                      className="w-full text-sm sm:text-base"
+                      placeholder="Student ID"
+                    />
+                  </div>
 
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 w-full">
 
                   <Input
                     label="Email Address"
@@ -316,19 +340,26 @@ const SettingsPage = () => {
                     name="email"
                     value={accountData.email}
                     onChange={handleAccountChange}
+                    className="w-full text-sm sm:text-base"
+                    placeholder="Enter your email address"
                   />
 
                 </div>
 
               </SectionCard>
+
             </div>
 
           </div>
 
+        </div>
 
-          {/* =================================================
-              SECURITY
-          ================================================== */}
+
+        {/* =================================================
+            NOTIFICATIONS
+        ================================================== */}
+
+        <div className="lg:col-span-4">
 
           <div
             className="
@@ -343,9 +374,7 @@ const SettingsPage = () => {
               hover:-translate-y-1
               hover:shadow-lg
             "
-            style={{
-              animationDelay: '300ms',
-            }}
+            style={{ animationDelay: '450ms' }}
           >
 
             {/* Animated green line */}
@@ -386,7 +415,154 @@ const SettingsPage = () => {
               "
             />
 
-            <div className="relative z-10">
+            <div className="relative z-10 bg-white p-4 sm:p-6">
+
+              <SectionCard
+                title="Notifications"
+                icon={Bell}
+              >
+
+                <div className="flex items-center justify-between gap-3">
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-800 truncate">
+                      Notifications
+                    </p>
+
+                    <p className="mt-0.5 text-xs text-gray-400 break-words">
+                      Receive updates about your applications
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {/* Toggle Button */}
+                    <button
+                      onClick={() =>
+                        setNotificationsEnabled((prev) => !prev)
+                      }
+                      className={`
+                        relative
+                        h-8
+                        w-14
+                        shrink-0
+                        rounded-full
+                        transition-all
+                        duration-300
+                        ease-in-out
+                        hover:scale-105
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-brand/50
+                        focus:ring-offset-2
+                        ${notificationsEnabled ? 'bg-brand shadow-md' : 'bg-gray-300'}
+                      `}
+                      role="switch"
+                      aria-checked={notificationsEnabled}
+                      aria-label="Toggle notifications"
+                    >
+                      <span
+                        className={`
+                          absolute
+                          top-1
+                          h-6
+                          w-6
+                          rounded-full
+                          bg-white
+                          shadow-lg
+                          transition-all
+                          duration-300
+                          ease-in-out
+                          ${notificationsEnabled ? 'translate-x-7' : 'translate-x-1'}
+                        `}
+                      />
+
+                      {/* Status indicator for accessibility */}
+                      <span className="sr-only">
+                        {notificationsEnabled ? 'Notifications enabled' : 'Notifications disabled'}
+                      </span>
+                    </button>
+                  </div>
+
+                </div>
+
+                {/* Status text for mobile */}
+                <div className="mt-3 flex items-center justify-between text-xs">
+                  <span className="text-gray-400">Status</span>
+                  <span className={`font-medium ${notificationsEnabled ? 'text-brand' : 'text-gray-500'}`}>
+                    {notificationsEnabled ? 'On' : 'Off'}
+                  </span>
+                </div>
+
+              </SectionCard>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* =================================================
+            SECURITY
+        ================================================== */}
+
+        <div className="lg:col-span-12">
+
+          <div
+            className="
+              group
+              relative
+              overflow-hidden
+              rounded-2xl
+              animate-fade-in-up
+              transition-all
+              duration-500
+              ease-out
+              hover:-translate-y-1
+              hover:shadow-lg
+            "
+            style={{ animationDelay: '300ms' }}
+          >
+
+            {/* Animated green line */}
+            <div
+              className="
+                pointer-events-none
+                absolute
+                left-0
+                top-0
+                z-30
+                h-0.5
+                w-0
+                bg-brand
+                transition-all
+                duration-500
+                ease-out
+                group-hover:w-full
+              "
+            />
+
+            {/* Green glow */}
+            <div
+              className="
+                pointer-events-none
+                absolute
+                -right-10
+                -top-10
+                z-0
+                h-24
+                w-24
+                rounded-full
+                bg-brand/0
+                blur-2xl
+                transition-all
+                duration-500
+                group-hover:scale-150
+                group-hover:bg-brand/10
+              "
+            />
+
+            <div className="relative z-10 bg-white p-4 sm:p-6">
 
               <SectionCard
                 title="Security"
@@ -404,42 +580,58 @@ const SettingsPage = () => {
                       text-xs
                       text-red-500
                       animate-fade-in-up
+                      break-words
                     "
                   >
                     {passwordError}
                   </p>
                 )}
 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 
-                  <PasswordInput
-                    label="Current Password"
-                    name="current"
-                    placeholder="Enter current password"
-                    value={passwordData.current}
-                    onChange={handlePasswordChange}
-                  />
+                  <div className="w-full">
+                    <PasswordInput
+                      label="Current Password"
+                      name="current"
+                      placeholder="Enter current password"
+                      value={passwordData.current}
+                      onChange={handlePasswordChange}
+                      className="w-full text-sm sm:text-base"
+                    />
+                  </div>
 
-                  <PasswordInput
-                    label="New Password"
-                    name="newPassword"
-                    placeholder="Enter new password"
-                    value={passwordData.newPassword}
-                    onChange={handlePasswordChange}
-                  />
+                  <div className="w-full">
+                    <PasswordInput
+                      label="New Password"
+                      name="newPassword"
+                      placeholder="Enter new password"
+                      value={passwordData.newPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full text-sm sm:text-base"
+                    />
+                  </div>
 
-                  <PasswordInput
-                    label="Confirm New Password"
-                    name="confirm"
-                    placeholder="Confirm new password"
-                    value={passwordData.confirm}
-                    onChange={handlePasswordChange}
-                  />
+                  <div className="w-full">
+                    <PasswordInput
+                      label="Confirm New Password"
+                      name="confirm"
+                      placeholder="Confirm new password"
+                      value={passwordData.confirm}
+                      onChange={handlePasswordChange}
+                      className="w-full text-sm sm:text-base"
+                    />
+                  </div>
+
+                </div>
+
+                <div className="mt-4">
 
                   <Button
                     onClick={handleUpdatePassword}
                     variant="outline"
                     className="
+                      w-full
+                      sm:w-auto
                       text-sm
                       transition-all
                       duration-300
@@ -460,336 +652,6 @@ const SettingsPage = () => {
 
         </div>
 
-
-        {/* ===================================================
-            RIGHT COLUMN
-        ==================================================== */}
-
-        <div className="space-y-6">
-
-          {/* =================================================
-              NOTIFICATIONS
-          ================================================== */}
-
-          <div
-            className="
-              group
-              relative
-              overflow-hidden
-              rounded-2xl
-              animate-fade-in-up
-              transition-all
-              duration-500
-              ease-out
-              hover:-translate-y-1
-              hover:shadow-lg
-            "
-            style={{
-              animationDelay: '450ms',
-            }}
-          >
-
-            {/* Animated green line */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                left-0
-                top-0
-                z-30
-                h-0.5
-                w-0
-                bg-brand
-                transition-all
-                duration-500
-                ease-out
-                group-hover:w-full
-              "
-            />
-
-            {/* Green glow */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                -right-10
-                -top-10
-                z-0
-                h-24
-                w-24
-                rounded-full
-                bg-brand/0
-                blur-2xl
-                transition-all
-                duration-500
-                group-hover:scale-150
-                group-hover:bg-brand/10
-              "
-            />
-
-            <div className="relative z-10">
-
-              <SectionCard
-                title="Notifications"
-                icon={Bell}
-              >
-
-                <div className="flex items-center justify-between">
-
-                  <div>
-
-                    <p className="text-sm font-medium text-gray-800">
-                      Notifications
-                    </p>
-
-                    <p className="mt-0.5 text-xs text-gray-400">
-                      Receive updates about your applications
-                    </p>
-
-                  </div>
-
-                  <button
-                    onClick={() =>
-                      setNotificationsEnabled((prev) => !prev)
-                    }
-                    className={`
-                      relative
-                      h-6
-                      w-11
-                      shrink-0
-                      rounded-full
-                      transition-all
-                      duration-300
-                      hover:scale-105
-                      ${
-                        notificationsEnabled
-                          ? 'bg-brand shadow-sm'
-                          : 'bg-gray-200'
-                      }
-                    `}
-                  >
-
-                    <span
-                      className={`
-                        absolute
-                        top-0.5
-                        h-5
-                        w-5
-                        rounded-full
-                        bg-white
-                        shadow
-                        transition-transform
-                        duration-300
-                        ${
-                          notificationsEnabled
-                            ? 'translate-x-5'
-                            : 'translate-x-0.5'
-                        }
-                      `}
-                    />
-
-                  </button>
-
-                </div>
-
-              </SectionCard>
-
-            </div>
-
-          </div>
-
-
-          {/* =================================================
-              APPEARANCE
-          ================================================== */}
-
-          <div
-            className="
-              group
-              relative
-              overflow-hidden
-              rounded-2xl
-              animate-fade-in-up
-              transition-all
-              duration-500
-              ease-out
-              hover:-translate-y-1
-              hover:shadow-lg
-            "
-            style={{
-              animationDelay: '550ms',
-            }}
-          >
-
-            {/* Animated green line */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                left-0
-                top-0
-                z-30
-                h-0.5
-                w-0
-                bg-brand
-                transition-all
-                duration-500
-                ease-out
-                group-hover:w-full
-              "
-            />
-
-            {/* Green glow */}
-            <div
-              className="
-                pointer-events-none
-                absolute
-                -right-10
-                -top-10
-                z-0
-                h-24
-                w-24
-                rounded-full
-                bg-brand/0
-                blur-2xl
-                transition-all
-                duration-500
-                group-hover:scale-150
-                group-hover:bg-brand/10
-              "
-            />
-
-            <div className="relative z-10">
-
-              <SectionCard title="Appearance">
-
-                <p className="mb-3 text-xs text-gray-400">
-                  Choose how the app looks to you
-                </p>
-
-                <div className="grid grid-cols-2 gap-3">
-
-                  {/* Light */}
-                  <button
-                    onClick={() => setAppearance('light')}
-                    className={`
-                      group/option
-                      relative
-                      flex
-                      items-center
-                      justify-center
-                      gap-2
-                      overflow-hidden
-                      rounded-lg
-                      border
-                      py-2.5
-                      text-sm
-                      font-medium
-                      transition-all
-                      duration-300
-                      hover:-translate-y-0.5
-                      hover:shadow-md
-                      ${
-                        appearance === 'light'
-                          ? 'border-brand bg-brand-light text-brand shadow-sm'
-                          : 'border-gray-200 text-gray-500 hover:border-brand/20 hover:bg-gray-50 hover:text-brand'
-                      }
-                    `}
-                  >
-
-                    <span
-                      className="
-                        absolute
-                        left-0
-                        top-0
-                        h-0.5
-                        w-0
-                        bg-brand
-                        transition-all
-                        duration-300
-                        group-hover/option:w-full
-                      "
-                    />
-
-                    <Sun
-                      size={15}
-                      className="
-                        transition-transform
-                        duration-300
-                        group-hover/option:rotate-12
-                      "
-                    />
-
-                    Light
-
-                  </button>
-
-
-                  {/* Dark */}
-                  <button
-                    onClick={() => setAppearance('dark')}
-                    className={`
-                      group/option
-                      relative
-                      flex
-                      items-center
-                      justify-center
-                      gap-2
-                      overflow-hidden
-                      rounded-lg
-                      border
-                      py-2.5
-                      text-sm
-                      font-medium
-                      transition-all
-                      duration-300
-                      hover:-translate-y-0.5
-                      hover:shadow-md
-                      ${
-                        appearance === 'dark'
-                          ? 'border-brand bg-brand-light text-brand shadow-sm'
-                          : 'border-gray-200 text-gray-500 hover:border-brand/20 hover:bg-gray-50 hover:text-brand'
-                      }
-                    `}
-                  >
-
-                    <span
-                      className="
-                        absolute
-                        left-0
-                        top-0
-                        h-0.5
-                        w-0
-                        bg-brand
-                        transition-all
-                        duration-300
-                        group-hover/option:w-full
-                      "
-                    />
-
-                    <Moon
-                      size={15}
-                      className="
-                        transition-transform
-                        duration-300
-                        group-hover/option:rotate-12
-                      "
-                    />
-
-                    Dark
-
-                  </button>
-
-                </div>
-
-              </SectionCard>
-
-            </div>
-
-          </div>
-
-        </div>
-
       </div>
 
 
@@ -799,18 +661,21 @@ const SettingsPage = () => {
 
       <div
         className="
+          mt-4
           flex
-          justify-end
+          justify-center
+          sm:justify-end
           animate-fade-in-up
+          sm:mt-6
         "
-        style={{
-          animationDelay: '650ms',
-        }}
+        style={{ animationDelay: '650ms' }}
       >
 
         <Button
           onClick={handleSaveChanges}
           className="
+            w-full
+            sm:w-auto
             px-6
             transition-all
             duration-300

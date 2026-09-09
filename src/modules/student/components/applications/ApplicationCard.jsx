@@ -6,6 +6,15 @@ const ApplicationCard = ({ application }) => {
   const [expanded, setExpanded] = useState(false);
   const { role, company, location, appliedDate, status, statusLabel, resumeName } = application;
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '#';
+    link.download = resumeName || 'Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
       <button
@@ -56,8 +65,10 @@ const ApplicationCard = ({ application }) => {
               <span className="truncate">{resumeName}</span>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <button className="text-xs text-brand hover:underline">Replace</button>
-              <button className="text-xs text-brand hover:underline flex items-center gap-1">
+              <button 
+                onClick={handleDownload}
+                className="text-xs text-brand hover:underline flex items-center gap-1 font-medium"
+              >
                 <Download size={12} /> Download
               </button>
             </div>

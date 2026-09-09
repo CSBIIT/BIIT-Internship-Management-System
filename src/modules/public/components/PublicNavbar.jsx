@@ -17,11 +17,11 @@ const PublicNavbar = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <header className="bg-brand px-4 sm:px-6 lg:px-10 py-3 sm:py-4 sticky top-0 z-50">
+    <header className="bg-brand px-4 sm:px-6 lg:px-10 py-2 sm:py-2.5 sticky top-0 z-50">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <NavLink to="/" onClick={closeMenu}>
-          <Logo variant="white" />
+          <Logo variant="white" size="md" />
         </NavLink>
 
         {/* Desktop Navigation */}
@@ -57,7 +57,7 @@ const PublicNavbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <nav className="md:hidden mt-4 pt-4 border-t border-white/10">
+        <nav className="md:hidden mt-3 pt-3 border-t border-white/10">
           <div className="flex flex-col gap-3">
             {navLinks.map((link) => (
               <NavLink

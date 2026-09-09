@@ -1,11 +1,17 @@
 import AppRouter from './routes/AppRouter';
 import { AuthProvider } from './context/AuthContext';
+import { ProfilePhotoProvider } from './context/ProfilePhotoContext';
+import { ProfileProvider } from './context/ProfileContext';
 
 function App() {
   return (
-    <AuthProvider>
-      <AppRouter />
-    </AuthProvider>
+    <ProfilePhotoProvider>
+      <ProfileProvider>
+        <AuthProvider>
+          <AppRouter />
+        </AuthProvider>
+      </ProfileProvider>
+    </ProfilePhotoProvider>
   );
 }
 

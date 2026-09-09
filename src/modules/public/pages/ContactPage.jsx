@@ -22,7 +22,7 @@ const contactInfo = [
   {
     icon: Phone,
     label: 'Phone',
-    value: '+92 300 1234567',
+    value: '+92 3330101990',
   },
   {
     icon: Clock,
@@ -32,7 +32,7 @@ const contactInfo = [
   {
     icon: MapPin,
     label: 'Location',
-    value: 'CS Office, BIT Wah',
+    value: 'CS Office BIIT, Rawalpindi',
   },
 ];
 
@@ -551,7 +551,7 @@ const ContactPage = () => {
                     </p>
 
                     <p className="text-sm font-bold text-gray-800">
-                      CS Office, BIT Wah
+                      CS Office, BIIT Rawalpindi
                     </p>
 
                   </div>

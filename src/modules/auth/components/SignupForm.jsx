@@ -26,19 +26,38 @@ const SignupForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  e.preventDefault();
+  if (!validate()) return;
 
-    setLoading(true);
-    try {
-      console.log('Signing up with', formData);
-      navigate('/login');
-    } catch (err) {
-      setErrors({ form: 'Something went wrong. Please try again.' });
-    } finally {
-      setLoading(false);
+  if (!formData.email.endsWith('@biit.edu.pk')) {
+    setErrors({ email: 'Only official @biit.edu.pk email addresses are allowed' });
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const res = await fetch('http://127.0.0.1:8001/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: formData.email })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setErrors({ form: data.message });
+      return;
     }
-  };
+
+    // Success alert requirement
+    alert("An 8-digit password has been sent to your mail. Get logged in!");
+    navigate('/login');
+  } catch (err) {
+    setErrors({ form: 'Server error. Please check your connection.' });
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div
